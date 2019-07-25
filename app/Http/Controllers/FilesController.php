@@ -37,7 +37,13 @@ class FilesController extends Controller
             "data" => $file
         );
     }
-
+    public static function uploadFile($file, $local_uri, $width = null, $height = null){
+        $info = pathinfo($file->getClientOriginalName());            
+        $ext = $info['extension'];      
+        $nombre = bin2hex(random_bytes(24)) . "." . $ext;    
+        \Storage::disk('public')->put($nombre,  \File::get($file));    
+        return URL::to('/') . Storage::url($nombre);
+    }
     public function create(Request $req)
     {
         

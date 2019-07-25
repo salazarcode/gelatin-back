@@ -25,6 +25,12 @@ class User extends Model
     public function messages(){
         return $this->hasMany('App\Message');
     }
+    public function recetas(){
+        return $this->hasMany('App\Receta');
+    }
+    public function datos(){
+        return $this->hasMany('App\Dato');
+    }
     public function detail()
     {
         return $this->hasOne("App\Detail");

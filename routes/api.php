@@ -19,7 +19,7 @@ Route::get('/setFilesLink', function () {
 });
 
 Route::get('/hola', function () {
-    return "Mundo";
+    return "Mundo local";
 });
 
 Route::middleware(["cors"])->group(function () { 
@@ -34,6 +34,27 @@ Route::middleware(["cors"])->group(function () {
     Route::get('/objectives/{id?}', 'ObjectivesController@retrieve');
     Route::get('/habits/{id?}', 'HabitsController@retrieve');
     Route::get('/levels/{id?}', 'LevelsController@retrieve');  
+
+    
+    Route::post('/foodtypes', 'FoodtypesController@create');  
+    Route::get('/foodtypes/{id?}', 'FoodtypesController@retrieve');  
+    Route::post('/foodtypes/{id}', 'FoodtypesController@update');  
+    Route::delete('/foodtypes/{id}', 'FoodtypesController@delete');  
+    
+    Route::post('/datatypes', 'DatatypesController@create');  
+    Route::get('/datatypes/{id?}', 'DatatypesController@retrieve');  
+    Route::post('/datatypes/{id}', 'DatatypesController@update');  
+    Route::delete('/datatypes/{id}', 'DatatypesController@delete');  
+    
+    Route::post('/recetas', 'RecetasController@create');  
+    Route::get('/recetas/{id?}', 'RecetasController@retrieve');  
+    Route::post('/recetas/{id}', 'RecetasController@update');  
+    Route::delete('/recetas/{id}', 'RecetasController@delete');  
+    
+    Route::post('/datos', 'DatosController@create');  
+    Route::get('/datos/{user_id}/{datatype_id?}', 'DatosController@retrieve');  
+    Route::post('/datos/{id}', 'DatosController@update');  
+    Route::delete('/datos/{id}', 'DatosController@delete');  
 });
 
 Route::middleware(["TokenChecker", "cors"])->group(function () {
@@ -63,8 +84,6 @@ Route::middleware(["TokenChecker", "cors"])->group(function () {
     Route::get('/pools/{id?}', 'PoolsController@retrieve');
     Route::post('/pools/{id}', 'PoolsController@update');
     Route::delete('/pools/{id}', 'PoolsController@delete');
-
-
 
     Route::post('/levels', 'LevelsController@create');
     Route::post('/levels/{id}', 'LevelsController@update');
