@@ -21,6 +21,7 @@ class Users extends Migration
             $table->string("password");
             $table->string("session_token");
             $table->string("recovery_token");
+            $table->string("push_token");
             $table->timestamps();
         });
     }

@@ -13,19 +13,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class DetailsController extends Controller
 {
     public function create(Request $rq){
-        //GUARDAR LA FOTO DEL USUARIO INI
-        $profile_picture_id = null;
-        if($rq->hasFile("profile_picture"))
-        {
-            $fileCreated = FilesController::uploadAndCreate($rq->file("profile_picture"), "");
-            if($fileCreated["success"] == 0)
-            {
-                $profile_picture_id = 0;
-            }
-            $profile_picture_id = $fileCreated["data"]["id"];            
-        }
-        //GUARDAR LA FOTO DEL USUARIO FIN
-
         $d = new Detail();
         $d->user_id = $rq->user_id;
 
@@ -42,8 +29,7 @@ class DetailsController extends Controller
         $d->intensidad_programa = 0;
         $d->actividad_fisica_actual = $rq->actividad_fisica_actual;
         $d->actividad_fisica_meta = $rq->actividad_fisica_meta;
-
-        $d->profile_picture = $profile_picture_id != null ? $profile_picture_id : 0;
+        $d->profile_picture = $rq->profile_picture != null ? FilesController::uploadFile($rq->file("profile_picture")) : "";
 
         $d->save();
 

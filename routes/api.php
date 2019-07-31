@@ -19,22 +19,16 @@ Route::get('/setFilesLink', function () {
 });
 
 Route::get('/hola', function () {
-    return "aefawefagregre";
+    return "no vale";
 });
 
 Route::middleware(["cors"])->group(function () { 
     Route::post("/login", "UsersController@login");
-    Route::post('/users', 'UsersController@create');
-    Route::get("/aus", "UsersController@activeUserSessions");
-    Route::post("/files", "FilesController@create");
-
-    Route::post('/details', 'DetailsController@create');
-    Route::get('/details/{user_id}', 'DetailsController@retrieve');
+    Route::post('/register', 'UsersController@register');
     
     Route::get('/objectives/{id?}', 'ObjectivesController@retrieve');
     Route::get('/habits/{id?}', 'HabitsController@retrieve');
     Route::get('/levels/{id?}', 'LevelsController@retrieve');  
-
     
     Route::post('/foodtypes', 'FoodtypesController@create');  
     Route::get('/foodtypes/{id?}', 'FoodtypesController@retrieve');  
@@ -55,6 +49,7 @@ Route::middleware(["cors"])->group(function () {
     Route::get('/datos/{user_id}/{datatype_id?}', 'DatosController@retrieve');  
     Route::post('/datos/{id}', 'DatosController@update');  
     Route::delete('/datos/{id}', 'DatosController@delete');  
+    Route::get('/users/{id?}', 'UsersController@retrieve');
 });
 
 Route::middleware(["TokenChecker", "cors"])->group(function () {
@@ -67,7 +62,6 @@ Route::middleware(["TokenChecker", "cors"])->group(function () {
     Route::post("/chats/{chat_id}/messages", "ChatsController@addMessage");
     Route::get("/chats/{chat_id}/messages/{message_id?}", "ChatsController@getMessages");
 
-    Route::get('/users/{id?}', 'UsersController@retrieve');
     Route::post('/users/{id}', 'UsersController@update');
     Route::delete('/users/{id}', 'UsersController@delete');   
     Route::post("/logout", "UsersController@logout");

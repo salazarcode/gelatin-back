@@ -14,22 +14,58 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UsersController extends Controller
 {
-    public function create(Request $req)
+    public function register(Request $req)
     {
         $user = new User();
         $user->pool_id = 1;
-        $user->role_id = $req["role_id"];
-        $user->email = $req["email"];
-        $user->password = $req["password"];
+        $user->role_id = $req->role_id;
+        $user->email = $req->email;
+        $user->password = $req->password;
         $user->session_token = "";
-        $user->session_recovery = "";
+        $user->recovery_token = "";
+        $user->push_token = "";
         $user->save();
 
-        $token = $this->create_token($user->id, $user->role->id);
+        $d = new Detail();
+        $d->user_id = $user->id;
+
+        $d->sexo = $req->sexo;
+        $d->nombre = $req->nombre;
+        $d->ubicacion = $req->ubicacion;
+        $d->edad = $req->edad;
+
+        $d->estatura = $req->estatura;
+        $d->peso = $req->peso_actual;
+        $d->cintura = $req->cintura;
+        $d->peso_ideal = $req->peso_ideal;
+
+        $d->intensidad_programa = 0;
+        $d->actividad_fisica_actual = $req->actividad_fisica_actual;
+        $d->actividad_fisica_meta = $req->actividad_fisica_meta;
+        $d->profile_picture = $req->profile_picture != null ? FilesController::uploadFile($req->file("profile_picture")) : "";
+
+        $d->save();
+
+        $habitos = collect($req->habitos);        
+        $objetivos = collect($req->objetivos);
+        
+        $habitos->each(function($item) use($user){
+            $user->habits()->attach($item["id"]);
+        });
+        
+        $objetivos->each(function($item) use($user){
+            $user->objectives()->attach($item["id"]);
+        });
+        $user->detail;
+        $user->habits;
+        $user->objectives;
+        $user->role;
+
+        $this->create_token($user->id);
 
         return response()->json(array(
             "success" => 1,
-            "data" => array("user" => $user, "token" => $token)
+            "data" => array("user" => $user)
         ));
     }
 
@@ -103,21 +139,25 @@ class UsersController extends Controller
     }
 
     public function login(Request $req){
-        $correo = $req->correo;
+        $email = $req->email;
         $password = $req->password;
         $facebook = $req->facebook;
         $gmail = $req->gmail;
 
-
         if($facebook || $gmail)
         {
-            if($correo)
+            if($email)
             {
                 try{
-                    $user = User::where("email", $correo)->firstOrFail();
+                    $user = User::where("email", $email)->firstOrFail();
+                    $this->create_token($user->id);
+                    $user->detail;
+                    $user->habits;
+                    $user->objectives;
+                    $user->role;
                     return response()->json(array(
                         "success" => 1,
-                        "data" => array("token"=> $this->create_token($user->id))
+                        "data" => $user
                     ));
                 }
                 catch(ModelNotFoundException $ex){
@@ -131,26 +171,29 @@ class UsersController extends Controller
             {
                 return response()->json(array(
                     "success" => 0,
-                    "data" => array("mensaje"=>"No envió un correo")
+                    "data" => array(
+                        "mensaje"=>"No envió un correo",
+                        "input"=>$req->all()
+                        )
                 ));                
             }
         }
         else
         {
-            if($correo && $password)
+            if($email && $password)
             {
                 try{
                     $user = User::where([
-                        ['email', '=', $correo],
+                        ['email', '=', $email],
                         ['password', '=', $password],
                     ])->firstOrFail();
-                    $detail = $user->detail;
-                    $file = $detail->file;
+                    $user->detail;                    
+                    $user->habits;
+                    $user->objectives;
+                    $user->role;
                     return response()->json(array(
                         "success" => 1,
-                        "user" => $user,
-                        "detail" => $detail,
-                        "file" => $file
+                        "user" => $user
                     ));
                 }
                 catch(ModelNotFoundException $ex){
@@ -186,10 +229,5 @@ class UsersController extends Controller
                 "success" => 0,
                 "message" => "Such token doesn't exists"
             ));
-    }
-
-    public function activeUserSessions(){
-        $users = User::where("session_token", "!=", "")->get();
-        return $users;
     }
 }

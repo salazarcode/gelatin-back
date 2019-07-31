@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FilesController extends Controller
 {   
-    public static function uploadFile($file, $local_uri, $width = null, $height = null){
+    public static function uploadFile($file){
         $info = pathinfo($file->getClientOriginalName());            
         $ext = $info['extension'];      
         $nombre = bin2hex(random_bytes(24)) . "." . $ext;    
