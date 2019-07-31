@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnUserIdToMessages extends Migration
+class CreateObjectiveUser extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddColumnUserIdToMessages extends Migration
      */
     public function up()
     {
-        Schema::table('messages', function (Blueprint $table) {
-            $table->bigInteger("user_id");
+        Schema::create('objective_user', function (Blueprint $table) {
+            $table->bigInteger('objective_id');
+            $table->bigInteger('user_id');
         });
     }
 
@@ -25,8 +26,6 @@ class AddColumnUserIdToMessages extends Migration
      */
     public function down()
     {
-        Schema::table('messages', function (Blueprint $table) {
-            $table->dropColumn('user_id');
-        });
+        Schema::dropIfExists('objective_user');
     }
 }

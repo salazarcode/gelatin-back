@@ -15,10 +15,11 @@ class Messages extends Migration
     {
         Schema::create("messages", function($table){
             $table->bigIncrements("id");
-            $table->longText("text");
-            $table->timestamps();
-            $table->bigInteger("file_id")->nullable();
             $table->bigInteger("chat_id");
+            $table->bigInteger("user_id");
+            $table->longText("text");
+            $table->string("file")->nullable();
+            $table->timestamps();
         });
     }
 

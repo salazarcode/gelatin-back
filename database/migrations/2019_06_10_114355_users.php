@@ -20,7 +20,7 @@ class Users extends Migration
             $table->string("email")->unique();
             $table->string("password");
             $table->string("session_token");
-            $table->string("session_recovery");
+            $table->string("recovery_token");
             $table->timestamps();
         });
     }

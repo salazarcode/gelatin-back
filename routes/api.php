@@ -19,7 +19,7 @@ Route::get('/setFilesLink', function () {
 });
 
 Route::get('/hola', function () {
-    return "Mundo local";
+    return "aefawefagregre";
 });
 
 Route::middleware(["cors"])->group(function () { 
@@ -66,9 +66,6 @@ Route::middleware(["TokenChecker", "cors"])->group(function () {
 
     Route::post("/chats/{chat_id}/messages", "ChatsController@addMessage");
     Route::get("/chats/{chat_id}/messages/{message_id?}", "ChatsController@getMessages");
-
-    Route::get("/files/{id}", "FilesController@retrieve");
-    Route::delete("/files/{id}", "FilesController@delete");   
 
     Route::get('/users/{id?}', 'UsersController@retrieve');
     Route::post('/users/{id}', 'UsersController@update');

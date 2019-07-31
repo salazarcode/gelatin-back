@@ -39,11 +39,11 @@ class DetailsController extends Controller
         $d->cintura = $rq->cintura;
         $d->peso_ideal = $rq->peso_ideal;
 
-        $d->intensidad_programa = $rq->intensidad_programa;
+        $d->intensidad_programa = 0;
         $d->actividad_fisica_actual = $rq->actividad_fisica_actual;
         $d->actividad_fisica_meta = $rq->actividad_fisica_meta;
 
-        $d->profile_picture = $profile_picture_id;
+        $d->profile_picture = $profile_picture_id != null ? $profile_picture_id : 0;
 
         $d->save();
 

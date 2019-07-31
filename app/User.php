@@ -35,4 +35,12 @@ class User extends Model
     {
         return $this->hasOne("App\Detail");
     }
+    public function objectives()
+    {
+        return $this->belongsToMany('App\Objective');
+    }
+    public function habits()
+    {
+        return $this->belongsToMany('App\Habit');
+    }
 }

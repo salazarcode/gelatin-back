@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Files extends Migration
+class CreateTableHabitUser extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class Files extends Migration
      */
     public function up()
     {
-        Schema::create("files", function($table){
-            $table->bigIncrements("id");
-            $table->string("uri");
+        Schema::create('habit_user', function (Blueprint $table) {
+            $table->bigInteger('habit_id');
+            $table->bigInteger('user_id');
         });
     }
 
@@ -26,6 +26,6 @@ class Files extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists("files");
+        Schema::dropIfExists('habit_user');
     }
 }

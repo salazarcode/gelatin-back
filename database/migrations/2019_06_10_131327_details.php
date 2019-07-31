@@ -27,7 +27,7 @@ class Details extends Migration
             $table->bigInteger("intensidad_programa");
             $table->bigInteger("actividad_fisica_actual");
             $table->bigInteger("actividad_fisica_meta");
-            $table->bigInteger("profile_picture");
+            $table->string("profile_picture");
         });
     }
 

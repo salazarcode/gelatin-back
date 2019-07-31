@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Habit extends Model
 {
     public $timestamps = false;
-    public function details()
+    public function users()
     {
-        return $this->belongsToMany('App\Detail');
+        return $this->belongsToMany('App\User');
     }
 }

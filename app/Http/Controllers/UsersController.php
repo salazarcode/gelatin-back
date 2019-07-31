@@ -144,9 +144,13 @@ class UsersController extends Controller
                         ['email', '=', $correo],
                         ['password', '=', $password],
                     ])->firstOrFail();
+                    $detail = $user->detail;
+                    $file = $detail->file;
                     return response()->json(array(
                         "success" => 1,
-                        "data" => array("token"=> $this->create_token($user->id))
+                        "user" => $user,
+                        "detail" => $detail,
+                        "file" => $file
                     ));
                 }
                 catch(ModelNotFoundException $ex){
